@@ -1,0 +1,655 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开式风扇与传统涡扇发动机性能对比</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #FFFFFF;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        .highlight-gradient-blue {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0), rgba(59, 130, 246, 0.05));
+        }
+        .highlight-gradient-green {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0), rgba(34, 197, 94, 0.05));
+        }
+        .highlight-gradient-purple {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0), rgba(168, 85, 247, 0.05));
+        }
+        .highlight-gradient-orange {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0), rgba(249, 115, 22, 0.05));
+        }
+        .highlight-gradient-red {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0), rgba(239, 68, 68, 0.05));
+        }
+        .highlight-gradient-cyan {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0), rgba(6, 182, 212, 0.05));
+        }
+        .card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .text-gradient-blue {
+            background-image: linear-gradient(to right, #3B82F6, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-green {
+            background-image: linear-gradient(to right, #22C55E, #4ADE80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-purple {
+            background-image: linear-gradient(to right, #A855F7, #C084FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-orange {
+            background-image: linear-gradient(to right, #F97316, #FB923C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-red {
+            background-image: linear-gradient(to right, #EF4444, #F87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-cyan {
+            background-image: linear-gradient(to right, #06B6D4, #22D3EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            transition: width 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- 标题卡片 -->
+        <div class="card md:col-span-4 p-8 flex flex-col justify-center mb-6">
+            <div class="absolute top-0 left-0 w-full h-full highlight-gradient-blue"></div>
+            <div class="relative">
+                <div class="flex items-center mb-4">
+                    <i class="fa-solid fa-plane-up text-4xl text-blue-500 mr-4"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800">开式风扇与传统涡扇发动机性能对比</h1>
+                </div>
+                <p class="text-lg text-gray-600 max-w-4xl">基于国内干线、国际干线与支线航空场景的运营适配性分析</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+            <!-- 核心摘要卡片 -->
+            <div class="card md:col-span-4 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-green"></div>
+                <div class="relative">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">核心摘要</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fa-solid fa-gas-pump text-green-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-700">燃油效率</h3>
+                                    <p class="text-gray-600 text-sm">开式风扇发动机目标油耗较现役最先进窄体机发动机降低<span class="font-bold text-green-600">20%以上</span>，长航程国际干线节油效益最优。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa-solid fa-dollar-sign text-green-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-700">成本结构</h3>
+                                    <p class="text-gray-600 text-sm">燃油成本较CFM56降低<span class="font-bold text-green-600">20%-25%</span>，较PW1100G降低<span class="font-bold text-green-600">10%-15%</span>，长期规模化后成本优势显著。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fa-solid fa-wrench text-green-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-700">维护难度</h3>
+                                    <p class="text-gray-600 text-sm">开式风扇发动机理论维护优势明显，但处于测试阶段；CFM56以极致可靠性和全球成熟MRO网络成为国内支线最优选择。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa-solid fa-leaf text-green-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-700">环保性能</h3>
+                                    <p class="text-gray-600 text-sm">开式风扇发动机可满足ICAO CORSIA、EU ETS及2026版中国民航排放要求，是航司实现2035年净零碳目标的核心支撑。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 燃油效率对比卡片 -->
+            <div class="card md:col-span-2 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-purple"></div>
+                <div class="relative flex flex-col h-full">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">燃油效率对比</h2>
+                    <div class="flex-grow h-64">
+                        <canvas id="fuelEfficiencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 涵道比对比卡片 -->
+            <div class="card md:col-span-2 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-orange"></div>
+                <div class="relative flex flex-col h-full">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">涵道比对比</h2>
+                    <div class="flex-grow h-64">
+                        <canvas id="bypassRatioChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 全生命周期成本卡片 -->
+            <div class="card md:col-span-4 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-cyan"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">全生命周期成本对比 (LCC)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-cyan-500 mb-2">$2,200万</div>
+                            <h3 class="font-semibold text-gray-700 mb-2">开式风扇 (CFM RISE)</h3>
+                            <p class="text-sm text-gray-500">燃油节省可在5年内覆盖采购溢价</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-gray-500 mb-2">$2,500万</div>
+                            <h3 class="font-semibold text-gray-700 mb-2">CFM56</h3>
+                            <p class="text-sm text-gray-500">采购成本最低，但燃油成本最高</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-gray-500 mb-2">$3,200万</div>
+                            <h3 class="font-semibold text-gray-700 mb-2">PW1100G</h3>
+                            <p class="text-sm text-gray-500">维护成本过高，抵消燃油节省效益</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维护难度卡片 -->
+            <div class="card md:col-span-2 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-red"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">维护难度与可靠性</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">CFM56</span>
+                                <span class="text-sm font-medium text-gray-700">99.99%</span>
+                            </div>
+                            <div class="progress-bar bg-gray-200">
+                                <div class="progress-fill bg-red-500" style="width: 99.99%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">签派可靠性，全球成熟MRO网络</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">PW1100G</span>
+                                <span class="text-sm font-medium text-gray-700">99.85%</span>
+                            </div>
+                            <div class="progress-bar bg-gray-200">
+                                <div class="progress-fill bg-red-400" style="width: 99.85%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">齿轮箱维护复杂，停场周期长</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">开式风扇 (CFM RISE)</span>
+                                <span class="text-sm font-medium text-gray-700">99.9% (目标)</span>
+                            </div>
+                            <div class="progress-bar bg-gray-200">
+                                <div class="progress-fill bg-red-300" style="width: 99.9%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">结构简化，理论可靠性高，测试阶段</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 环保性能卡片 -->
+            <div class="card md:col-span-2 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-green"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">环保性能对比</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">CO₂ 减排率</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">开式风扇</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-500" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">25%↓</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">PW1100G</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-400" style="width: 64%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">16%↓</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">CFM56</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-300" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">基准</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">NOx 减排率</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">开式风扇</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-500" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">60%↓</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">PW1100G</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-400" style="width: 83%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">50%↓</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs w-20">CFM56</span>
+                                    <div class="progress-bar bg-gray-200 flex-grow mx-2">
+                                        <div class="progress-fill bg-green-300" style="width: 33%"></div>
+                                    </div>
+                                    <span class="text-xs font-medium">20%↓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 场景适配卡片 -->
+            <div class="card md:col-span-4 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-blue"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">应用场景适配分析</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                            <div class="flex items-center mb-4">
+                                <i class="fa-solid fa-earth-americas text-2xl text-blue-500 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-800">国际干线</h3>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4">航程长、燃油成本占比高、合规要求严</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">开式风扇</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">PW1100G</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">CFM56</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-4">开式风扇为唯一最优选择</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                            <div class="flex items-center mb-4">
+                                <i class="fa-solid fa-map-location-dot text-2xl text-blue-500 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-800">国内干线</h3>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4">日利用率高、航程适中、客流稳定</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">开式风扇</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">PW1100G</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">CFM56</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-4">开式风扇为最优选择，可实现降本与合规双重目标</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                            <div class="flex items-center mb-4">
+                                <i class="fa-solid fa-map-pin text-2xl text-blue-500 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-800">国内支线</h3>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4">航程短、起降频繁、MRO资源有限</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">CFM56</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">PW1100G</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">开式风扇</span>
+                                    <div class="flex">
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-yellow-400"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                        <i class="fa-solid fa-star text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-4">CFM56为当前最优选择，开式风扇需等待MRO网络覆盖</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 综合评分卡片 -->
+            <div class="card md:col-span-4 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-purple"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">综合评分</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-6xl font-bold text-gradient-purple mb-4">9.35</div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">开式风扇 (CFM RISE)</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span>燃油效率</span>
+                                    <span class="font-medium">9.5/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>成本结构</span>
+                                    <span class="font-medium">9.0/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>维护难度</span>
+                                    <span class="font-medium">8.5/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>环保性能</span>
+                                    <span class="font-medium">10.0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-6xl font-bold text-gray-500 mb-4">7.15</div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">PW1100G</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span>燃油效率</span>
+                                    <span class="font-medium">7.8/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>成本结构</span>
+                                    <span class="font-medium">6.5/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>维护难度</span>
+                                    <span class="font-medium">6.0/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>环保性能</span>
+                                    <span class="font-medium">7.5/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-6xl font-bold text-gray-500 mb-4">6.85</div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">CFM56</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span>燃油效率</span>
+                                    <span class="font-medium">6.0/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>成本结构</span>
+                                    <span class="font-medium">7.0/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>维护难度</span>
+                                    <span class="font-medium">9.5/10</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>环保性能</span>
+                                    <span class="font-medium">5.0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结论卡片 -->
+            <div class="card md:col-span-4 p-8">
+                <div class="absolute top-0 left-0 w-full h-full highlight-gradient-green"></div>
+                <div class="relative">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">结论</h2>
+                    <p class="text-gray-700 mb-4">开式风扇发动机代表了航空动力的未来方向——其燃油效率、环保性能和全生命周期经济性均实现了代际突破，是航司满足2035年ICAO净零碳目标的唯一可行技术选择。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-rocket text-green-500 mr-2"></i>
+                                <h3 class="font-semibold text-gray-800">技术突破</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">燃油效率较现役最先进发动机提升20%以上，全生命周期减排率90%以上</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-coins text-green-500 mr-2"></i>
+                                <h3 class="font-semibold text-gray-800">成本优势</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">全生命周期成本较PW1100G低31%，燃油节省可在5年内覆盖采购溢价</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-globe text-green-500 mr-2"></i>
+                                <h3 class="font-semibold text-gray-800">场景适配</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">是国际干线和国内干线的最优选择，随MRO网络完善将覆盖所有场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 燃油效率对比图表
+    const fuelCtx = document.getElementById('fuelEfficiencyChart').getContext('2d');
+    new Chart(fuelCtx, {
+        type: 'bar',
+        data: {
+            labels: ['国际干线', '国内干线', '国内支线'],
+            datasets: [
+                {
+                    label: '开式风扇 (CFM RISE)',
+                    data: [2.2, 2.8, 3.5],
+                    backgroundColor: 'rgba(168, 85, 247, 0.7)',
+                    borderColor: 'rgba(168, 85, 247, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'PW1100G',
+                    data: [2.7, 3.3, 3.9],
+                    backgroundColor: 'rgba(249, 115, 22, 0.7)',
+                    borderColor: 'rgba(249, 115, 22, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'CFM56',
+                    data: [2.9, 3.6, 4.2],
+                    backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: '单座百公里油耗 (L)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: '分场景燃油效率对比',
+                    font: {
+                        size: 16
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // 涵道比对比图表
+    const bypassCtx = document.getElementById('bypassRatioChart').getContext('2d');
+    new Chart(bypassCtx, {
+        type: 'bar',
+        data: {
+            labels: ['开式风扇 (CFM RISE)', 'PW1100G', 'CFM56'],
+            datasets: [
+                {
+                    label: '涵道比',
+                    data: [60, 12, 5.1],
+                    backgroundColor: [
+                        'rgba(249, 115, 22, 0.7)',
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(34, 197, 94, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(249, 115, 22, 1)',
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(34, 197, 94, 1)'
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '涵道比 (1)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: '发动机涵道比对比',
+                    font: {
+                        size: 16
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // 进度条动画
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.style.width = bar.style.width;
+            });
+        }, 500);
+    });
+</script>
+</html>
